@@ -3,7 +3,7 @@ import streamlit as st
 
 st.set_page_config(
     page_title="Dashboard Hospitalar",
-    layout="centered"  # melhor pro mobile
+    layout="centered"
 )
 
 st.title("🏥 Dashboard de Atendimentos")
