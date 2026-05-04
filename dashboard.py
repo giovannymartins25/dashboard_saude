@@ -1,9 +1,6 @@
 import pandas as pd
 import streamlit as st
 
-# =========================
-# CONFIG
-# =========================
 st.set_page_config(
     page_title="Dashboard Hospitalar",
     layout="centered"  # melhor pro mobile
@@ -11,9 +8,8 @@ st.set_page_config(
 
 st.title("🏥 Dashboard de Atendimentos")
 
-# =========================
 # CARREGAR DADOS
-# =========================
+
 @st.cache_data
 def carregar_dados():
     df = pd.read_csv('dados_limpos.csv')
@@ -26,9 +22,8 @@ def carregar_dados():
 
 df = carregar_dados()
 
-# =========================
-# FILTROS (mais clean)
-# =========================
+# FILTROS 
+
 st.subheader("🔎 Filtros")
 
 cidade = st.selectbox(
@@ -49,18 +44,16 @@ if cidade != "Todas":
 if bairro != "Todos":
     df_filtrado = df_filtrado[df_filtrado['bairro'] == bairro]
 
-# =========================
-# MÉTRICAS (vertical)
-# =========================
+# MÉTRICAS
+
 st.subheader("📌 Resumo")
 
 st.metric("Total de Atendimentos", len(df_filtrado))
 st.metric("Cidades únicas", df_filtrado['cidade'].nunique())
 st.metric("Bairros únicos", df_filtrado['bairro'].nunique())
 
-# =========================
-# GRÁFICOS (mobile-friendly)
-# =========================
+# GRÁFICOS 
+
 st.subheader("📊 Tipos de Atendimento")
 st.bar_chart(df_filtrado['tipo_atendimento'].value_counts().head(5))
 
@@ -70,8 +63,7 @@ st.bar_chart(df_filtrado['cidade'].value_counts().head(5))
 st.subheader("🏠 Atendimentos por Bairro")
 st.bar_chart(df_filtrado['bairro'].value_counts().head(5))
 
-# =========================
 # TABELA
-# =========================
+
 st.subheader("📋 Dados (amostra)")
 st.dataframe(df_filtrado.head(50))
