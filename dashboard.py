@@ -26,23 +26,43 @@ df = carregar_dados()
 
 st.subheader("🔎 Filtros")
 
-cidade = st.selectbox(
-    "Cidade",
-    ["Todas"] + sorted(df['cidade'].dropna().unique())
-)
+col1, col2 = st.columns(2)
 
-bairro = st.selectbox(
-    "Bairro",
-    ["Todos"] + sorted(df['bairro'].dropna().unique())
-)
+cidades = sorted(df['cidade'].dropna().unique())
+bairros = sorted(df['bairro'].dropna().unique())
 
+with col1:
+    cidade = st.selectbox(
+        "Cidade",
+        ["Todas"] + cidades
+    )
+
+# Atualiza bairros de acordo com a cidade
+if cidade != "Todas":
+    bairros_filtrados = sorted(
+        df[df['cidade'] == cidade]['bairro'].dropna().unique()
+    )
+else:
+    bairros_filtrados = bairros
+
+with col2:
+    bairro = st.selectbox(
+        "Bairro",
+        ["Todos"] + bairros_filtrados
+    )
+
+# Aplicar filtros
 df_filtrado = df.copy()
 
 if cidade != "Todas":
-    df_filtrado = df_filtrado[df_filtrado['cidade'] == cidade]
+    df_filtrado = df_filtrado[
+        df_filtrado['cidade'] == cidade
+    ]
 
 if bairro != "Todos":
-    df_filtrado = df_filtrado[df_filtrado['bairro'] == bairro]
+    df_filtrado = df_filtrado[
+        df_filtrado['bairro'] == bairro
+    ]
 
 # MÉTRICAS
 
